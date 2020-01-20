@@ -15,12 +15,21 @@ import com.fasterxml.jackson.databind.*
 import io.ktor.auth.jwt.jwt
 import io.ktor.jackson.*
 import io.ktor.features.*
+import org.jetbrains.exposed.sql.Database
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
+
+
 
 @Suppress("unused") // Referenced in application.conf
 @kotlin.jvm.JvmOverloads
 fun Application.module(testing: Boolean = false) {
+
+    Database.connect("jdbc:postgresql://localhost/conta",driver = "org.postgresql.Driver",
+        user = "postgres",
+        password = "admin")
+
+
     install(io.ktor.websocket.WebSockets) {
         pingPeriod = Duration.ofSeconds(15)
         timeout = Duration.ofSeconds(15)

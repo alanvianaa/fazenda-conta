@@ -1,16 +1,20 @@
 package com.alanviana.resource
 
 import com.alanviana.model.Conta
+import com.alanviana.model.NewUsuario
 import com.alanviana.model.Usuario
+import com.alanviana.service.addUsuario
 import io.ktor.application.call
 import io.ktor.auth.AuthenticationPipeline
 import io.ktor.auth.authenticate
 import io.ktor.auth.parseAuthorizationHeader
 import io.ktor.http.HttpStatusCode
+import io.ktor.request.receive
 import io.ktor.response.respond
 import io.ktor.routing.Route
 import io.ktor.routing.route
 import io.ktor.routing.get
+import io.ktor.routing.post
 import java.time.LocalDateTime
 import java.util.*
 
@@ -47,6 +51,14 @@ fun Route.usuarios(){
             get {
                 call.respond(HttpStatusCode.OK, usuario)
             }
+            post {
+                val newUsuario = call.receive<NewUsuario>()
+                val usuario = addUsuario(newUsuario)
+                call.respond(HttpStatusCode.Created, usuario)
+            }
+
+
+
         }
     }
 }
